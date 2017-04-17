@@ -19,11 +19,9 @@ void square_multiply(mpz_t r, mpz_t a, mpz_t n, mpz_t h){ // r : resultat de la 
 
 void testFermat(mpz_t n, int k){	// n: entier et k nombre de répétition
 	int i, res =1;
-	mpz_t val, a, n_1, n_3; //n_1 : correspond à n-1, n_3 : correspond à n-3
-	mpz_init(a);   // Correspond à la valeur aléatoire
-	mpz_init(val); // On stock la valeur de retour de suare_multiply ici
-	mpz_init(n_1);
-	mpz_init(n_3);
+	mpz_t val, a, n_1, n_3; 		 // n_1 : correspond à n-1, n_3 : correspond à n-3,
+	mpz_inits(a, val, n_1, n_3, (void*)0);   // a: Correspond à la valeur aléatoire, val : stock la valeur de retour de suare_multiply
+	
 	mpz_sub_ui(n_1, n, 1);	//n_1 = n-1	
 	mpz_sub_ui(n_3, n, 3);	//n_1 = n-3
 
@@ -40,7 +38,7 @@ void testFermat(mpz_t n, int k){	// n: entier et k nombre de répétition
 		if ( mpz_cmp_ui(val, 1) == 0) res = 0; 	// n est composé
 	}
 	
-	if ( res == 1) gmp_printf("Le nombre %Zd est supposé premier \n",n);
+	if ( res == 1) gmp_printf("Le nombre %Zd est premier \n",n);
 	else  gmp_printf("Le nombre %Zd est composé \n \n",n);
 }
 /*
@@ -61,27 +59,37 @@ void decompo(mpz_t t, mpz_t s, mpz_t n){ // Fonction qui décompose n-1. (n vaud
 		}
 		mpz_add_ui(t,t,2); // t += 2 (car t doit être impair)
 	}
-}
+}*/
 
-void testMillerRabin(mpz_t n, int k){
+void testMillerRabin(mpz_t n, mpz_t k){ // n : nombre à tester, k : nombre de répétition
 
 	if ( mpz_cmp(n,2) == 0) gmp_printf("premier\n");
 	else if ( mpz_mod(n,2) == 0 ) gmp_printf("composé\n"); // cas nombre paire != 2
 	else {
 
 	int booleen =1;
-	mpz_t t, i, a, y, j, s;
+	mpz_t t, i, a, y, j, s, n1; // n1 => n+1
+	mpz_inits(t, i, a, y, j, s, (void*) 0);
 
-	for (i= 1; i <= k; i++){
-		mpz_urandomm(a, state, n); 
-		square_multiply(val, a, n, n_1);
-		if ( mpz_cmp(val, un) == 0) booleen = 0; 	// n est composé
+	for (mpz_set_ui(i,1); mpz_cmp_ui(i,k) <= 0; mpz_add_ui(i, 1)){ //for (i= 1; i <= k; i++)
+
+		mpz_urandomm(a, state, n1);  // a appartient à [0,n]
+		square_multiply(y, a, n, t);
+		if ( (mpz_cmp_ui(y, 1) != 1) && (mpz_cmp_ui(y, 1) != -1){
+			for (mpz_set_ui(i,1); mpz_cmp_ui(i,k) <= 0; mpz_add_ui(i, 1)){ //for (j= 1; j <= s-1; j++)
+				
+				mpz_mul(y, y, y); // y = y*y
+				mpz_mod(y, y, n); // y = (y*y) % n
+				if ( mpz_cmp_ui(y,1) == 0 ) return "composé";
+				if ( mpz_cmp_ui(y,-1) == 0 ) break;
+			}
+		}
 	}
 	
-	if ( booleen == 1) gmp_printf("Le nombre %Zd est supposé premier \n",n);
+	if ( booleen == 1) gmp_printf("Le nombre %Zd est premier \n",n);
 	else  gmp_printf("Le nombre %Zd est composé \n \n",n);
 
-}*/
+}
 
 int main(){ //int argc, char** argv
 	
