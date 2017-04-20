@@ -6,12 +6,16 @@ DM.o : DM.c DM.h
 DM: DM.o
 	gcc -o DM DM.o -lm -lgmp
 
+# Règle pour compiler
 all: DM
 
-clean:
-	rm -rf *.o
-mrproper: clean
-	rm -rf hello
+# Règle pour démarer le programme
 run: 
 	./DM
+
+clean:
+	rm -rf *.o 
+mrproper: clean
+	rm -rf hello
+
 
