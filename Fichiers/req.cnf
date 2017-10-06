@@ -1,0 +1,25 @@
+[ req ]
+default_bits			= 1024
+distinguished_name		= req_DN
+
+
+[ req_DN ]
+countryName			= "1. Pays (code a 2 lettres) "
+countryName_default		= FR
+countryName_min			= 2
+countryName_max 		= 2
+stateOrProvinceName		= "2. Departement ou province "
+stateOrProvinceName_default	= Ile-de-France (75)
+localityName			= "3. Nom de la localite "
+localityName_default		= Paris
+0.organizationName		= "4. Organisation "
+0.organizationName_default	= Universite de Versailles
+organizationalUnitName		= "5. Unite ou departement"
+organizationalUnitName_default	= "Licence3 INF"
+commonName			= "6. Nom "
+commonName_max			= 64
+commonName_default		= 
+emailAddress			= "7. Adresse e-mail "
+emailAddress_max		= 60
+emailAddress_default		= 
+
